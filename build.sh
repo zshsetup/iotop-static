@@ -145,11 +145,14 @@ echo ">>> iotop"
 (
   cd iotop
   LDFLAGS="-s"
-  [ "$STATIC" = 1 ] && LDFLAGS="-static -s"
+  # the static ncurses archive is not position independent, so the static build is no PIE either,
+  # which the Makefile would link it as
+  PIE=()
+  [ "$STATIC" = 1 ] && PIE=(MYLDFLAGS="-Os -static -s")
   # no LTO, which zig does not do for these targets; the flags of the Makefile otherwise stay
   "$MAKE" -j"$JOBS" NO_FLTO=1 CC="$CC" CFLAGS="-Os -fno-stack-protector" LDFLAGS="$LDFLAGS" \
     NCCC="-I$PREFIX/include -I$PREFIX/include/ncursesw" \
-    NCLD="-L$PREFIX/lib -lncursesw -ltinfow"
+    NCLD="-L$PREFIX/lib -lncursesw -ltinfow" "${PIE[@]}"
   rm -rf "$DIST"
   mkdir -p "$DIST/bin" "$DIST/share/man/man8"
   cp iotop "$DIST/bin/iotop"

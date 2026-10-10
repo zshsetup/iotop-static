@@ -31,7 +31,8 @@ fail() {
 }
 
 version="$("$IOTOP" --version)"
-echo "$version" | grep -q '^iotop' || fail "iotop --version: $version"
+# prints the command as run, then the version
+echo "$version" | grep -Eq ' [0-9]+\.[0-9]+$' || fail "iotop --version: $version"
 pass "$version"
 
 # the options and the full-screen mode need the taskstats interface of the kernel, which containers
