@@ -1,0 +1,8 @@
+[submodule "vendor/iotop"]
+    path = vendor/iotop
+    url = https://github.com/Tomas-M/iotop.git
+    shallow = true
+[submodule "vendor/ncurses"]
+    path = vendor/ncurses
+    url = https://github.com/ThomasDickey/ncurses-snapshots.git
+    shallow = true
